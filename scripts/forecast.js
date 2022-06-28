@@ -1,6 +1,6 @@
 /** @format */
 
-// getWeather, getCity, and updateCity (from app.js) will become methods as part of the Forecast class
+// /getWeather, getCity, and updateCity (from app.js) will become methods as part of the Forecast class
 
 class Forecast {
   constructor() {

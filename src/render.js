@@ -1,64 +1,54 @@
 /** @format */
+
+import { weatherIcon, dayIcon } from "./image.call.js";
+
 // cache DOM
-const card = document.querySelector(".card");
-const details = document.querySelector(".details");
 const time = document.querySelector(".day-image");
 const icon = document.querySelector(".weather-image");
-const forecastCard = document.querySelectorAll(".forecast");
 
 const render = (CityData) => {
   // const cityDets = data.cityDets;  // can be simplified
   // const weather = data.weather;    // similar to creation of shorthand notation
-  const { cityDets, currWeather, fiveDayWeather } = CityData; // destructure properties
+  const { cityDets, currWeather, fiveDayWeather, currentWeatherData } =
+    CityData; // destructure properties
 
   // update details template
-  details.innerHTML = `
-        <h5 class="my-3">${cityDets.EnglishName}</h5>
-        <div class="my-3">${currWeather.WeatherText}</div>
-        <div class="display-4 my-4">
-            <span>${currWeather.Temperature.Metric.Value}</span>
-            <span>&deg;C</span>
-        </div>
-    `;
+  const currentConditions = {
+    city: cityDets.EnglishName,
+    currentWeather: currWeather.WeatherText,
+    currentTempC: currWeather.Temperature.Metric.Value,
+    currentTempF: currWeather.Temperature.Imperial.Value,
+  };
 
-  forecastCard.forEach((card, index) => {
-    let daily = {
-      dayIcon: fiveDayWeather["DailyForecasts"][index].Day["Icon"],
-      dayPhrase: fiveDayWeather["DailyForecasts"][index].Day["IconPhrase"],
-      nightIcon: fiveDayWeather["DailyForecasts"][index].Night["Icon"],
-      nightPhrase: fiveDayWeather["DailyForecasts"][index].Night["IconPhrase"],
-      tempLow:
-        fiveDayWeather["DailyForecasts"][index].Temperature["Minimum"].Value,
-      tempHigh:
-        fiveDayWeather["DailyForecasts"][index].Temperature["Maximum"].Value,
-    };
+  const detailedConditions = {
+    temp: currentWeatherData.main["temp"],
+    feels_like: currentWeatherData.main["feels_like"],
+    temp_min: currentWeatherData.main["temp_min"],
+    temp_max: currentWeatherData.main["temp_max"],
+    humidity: currentWeatherData.main["humidity"],
+  };
 
-    let temp = document.createElement("span");
-    // let icon = document.createElement("img");
-    temp.textContent = `Low: ${daily["tempLow"]} - High: ${daily["tempHigh"]}`;
-    icon.setAttribute("src", `accuweather_icons/0${daily["dayIcon"]}-s.png`);
+  // forecastCard.forEach((card, index) => {
+  //   let daily = {
+  //     date: fiveDayWeather["DailyForecasts"][index]["Date"],
+  //     dayIcon: fiveDayWeather["DailyForecasts"][index].Day["Icon"],
+  //     dayPhrase: fiveDayWeather["DailyForecasts"][index].Day["IconPhrase"],
+  //     nightIcon: fiveDayWeather["DailyForecasts"][index].Night["Icon"],
+  //     nightPhrase: fiveDayWeather["DailyForecasts"][index].Night["IconPhrase"],
+  //     tempLowF:
+  //       fiveDayWeather["DailyForecasts"][index].Temperature["Minimum"].Value,
+  //     tempHighF:
+  //       fiveDayWeather["DailyForecasts"][index].Temperature["Maximum"].Value,
+  //   };
 
-    card.append(temp);
-    // console.log(fiveDayWeather["DailyForecasts"][index]);
-  });
+  //   let temp = document.createElement("span");
+  //   temp.textContent = `Low: ${daily["tempLowF"]} - High: ${daily["tempHighF"]}`;
 
-  // update night & day
-  // const iconSrc = `accuweather_icons/0${currWeather.WeatherIcon}-s.png`;
-  // icon.setAttribute("src", iconSrc);
+  //   card.append(temp);
+  // });
 
-  let timeSrc = null;
-  if (currWeather.IsDayTime) {
-    timeSrc = "accuweather_icons/day.svg";
-  } else {
-    timeSrc = "accuweather_icons/night.svg";
-  }
-
-  time.setAttribute("src", timeSrc);
-
-  // remove d-none class if present
-  if (card.classList.contains("d-none")) {
-    card.classList.remove("d-none");
-  }
+  // icon.setAttribute("src", weatherIcon(currWeather.WeatherIcon));
+  // time.setAttribute("src", dayIcon(currWeather.IsDayTime));
 };
 
 export default render;

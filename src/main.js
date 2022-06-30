@@ -7,10 +7,9 @@ const forecast = new Forecast();
 
 // 44-image icon types from Accuweather
 
-cityForm.addEventListener("submit", (event) => {
+cityForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  // get city value and reset after submit
   const city = cityForm.city.value.trim();
   cityForm.reset();
 
